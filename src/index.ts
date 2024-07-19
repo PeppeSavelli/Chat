@@ -46,8 +46,8 @@ app.post("/api/messages", (req:Request, res:Response) => {
 
 })
 server.listen(3000, () => {
-    console.log(`server is running on http://https://0cd997d9-5cfa-4944-bbd5-7c104d989074-00-3dkcjetmbvbng.worf.replit.dev:${3000}/api/messages`);
+    console.log(`server is running on https://0cd997d9-5cfa-4944-bbd5-7c104d989074-00-3dkcjetmbvbng.worf.replit.dev:${3000}/api/messages`);
 })
 app.listen(8080, () => {
-    console.log(`server is running on http://https://0cd997d9-5cfa-4944-bbd5-7c104d989074-00-3dkcjetmbvbng.worf.replit.dev:${8080}/api/messages`);
+    console.log(`server is running on https://0cd997d9-5cfa-4944-bbd5-7c104d989074-00-3dkcjetmbvbng.worf.replit.dev:${8080}/api/messages`);
 })
