@@ -5,6 +5,7 @@ import {config} from "dotenv";
 import { Server } from "socket.io";
 import { createServer } from "http";
 import cors from "cors";
+import path from "path";
 // #endregion 
 config();
 const app =express();
@@ -31,6 +32,10 @@ io.on("connection", (socket) => {
     })
 });
 })
+app.get("", (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+    });
+
 app.get("/api/messages",(req: Request, res: Response) => {
       const result = client.query("SELECT * FROM messages", (error, response)  => {
         if (error) res.status(500).json({ error });
@@ -46,8 +51,5 @@ app.post("/api/messages", (req:Request, res:Response) => {
 
 })
 server.listen(3000, () => {
-    console.log(`server is running on https://0cd997d9-5cfa-4944-bbd5-7c104d989074-00-3dkcjetmbvbng.worf.replit.dev:${3000}/api/messages`);
-})
-app.listen(8080, () => {
-    console.log(`server is running on https://0cd997d9-5cfa-4944-bbd5-7c104d989074-00-3dkcjetmbvbng.worf.replit.dev:${8080}/api/messages`);
+    console.log(`server is running on http://localhost:${3000}/api/messages`);
 })
