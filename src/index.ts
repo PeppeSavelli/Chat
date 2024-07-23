@@ -17,7 +17,7 @@ const server = createServer(app);
 const PORT = process.env.PORT || 3000;
 
 const client = createClient({ connectionString: process.env.DATABASE_URL });
-
+client.connect();
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -26,7 +26,7 @@ const io = new Server(server, {
 });
 // #endregion
 
-client.connect();
+
 
 // #region :::SOCKETS:::
 io.on("connection", (socket) => {
