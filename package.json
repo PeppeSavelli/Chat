@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --noEmit && tsc --outDir build && npm run copy-public",
-    "dev": "node build/index.js",
+    "start": "node build/index.js",
     "copy-public": "copyfiles -u 1 public/**/* build", 
-    "start": "nodemon"
+    "dev": "nodemon"
   },
   "author": "",
   "license": "ISC",
