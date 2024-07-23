@@ -58,10 +58,12 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req: Request, res: Response) => {
+    client.connect();
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/api/rooms/:idRoom/messages", (req: Request, res: Response) => {
+    client.connect();
   const { idRoom } = req.params;
   client.query("SELECT * FROM messages WHERE idRoom=$1", [Number(idRoom)], (error, response) => {
     if (error) res.status(500).json({ error });
@@ -70,6 +72,7 @@ app.get("/api/rooms/:idRoom/messages", (req: Request, res: Response) => {
 });
 
 app.get("/api/rooms", (req: Request, res: Response) => {
+    client.connect();
   client.query("SELECT * FROM rooms", (error, response) => {
     if (error) res.status(500).json({ error });
     else res.status(200).json(response.rows);
@@ -77,6 +80,7 @@ app.get("/api/rooms", (req: Request, res: Response) => {
 });
 
 app.post("/api/rooms", (req: Request, res: Response) => {
+    client.connect();
   const { name} = req.body;
   client.query(
     `INSERT INTO rooms (rooms) VALUES ($1) RETURNING *`,
@@ -89,6 +93,7 @@ app.post("/api/rooms", (req: Request, res: Response) => {
 });
 
 app.post("/api/rooms/:idRoom/messages", (req: Request, res: Response) => {
+    client.connect();
   const { content, username } = req.body;
   const { idRoom } = req.params;
   client.query(
@@ -102,5 +107,6 @@ app.post("/api/rooms/:idRoom/messages", (req: Request, res: Response) => {
 });
 
 server.listen(PORT, () => {
+    client.connect();
   console.log(`Server API is running http://localhost:${PORT}`);
 });
