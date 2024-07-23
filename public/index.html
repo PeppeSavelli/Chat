@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Socket.IO Client</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -10,7 +11,7 @@
         flex-direction: column;
         background-color: #e5ddd5;
         height: 100vh;
-        margin: 0px;
+        margin: 0;
       }
       ul {
         border-top-left-radius: 8px;
@@ -55,9 +56,10 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-width: 500px;
+        min-width: 300px;
+        max-width: 500px;
         margin: auto;
-        max-width: 80%;
+        width: 100%;
       }
       input {
         margin: 0;
@@ -79,13 +81,36 @@
         max-width: 140px;
         margin: 5px auto;
       }
+
+      /* Media query for mobile devices */
+      @media (max-width: 600px) {
+        ul {
+          border-radius: 0;
+          margin: 0;
+        }
+        li {
+          max-width: 80%;
+          margin: 5px;
+        }
+        form {
+          padding: 5px;
+          flex-direction: column;
+        }
+        button {
+          max-width: 100%;
+          margin-top: 5px;
+        }
+        input {
+          font-size: 14px;
+        }
+      }
     </style>
   </head>
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" placeholder="Type a message..." />
-      <button>Invia</button>
+      <button>Send</button>
     </form>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
     <script>
@@ -112,6 +137,7 @@
         if (!idRoom) {
           document.body.innerHTML = `
             <div class='container'>
+              <input type="text" id="username" placeholder="Username" />
               <input type="text" id="roomIdInput" placeholder="Room ID" />
               <button id="enterRoomButton">Enter Room</button>
             </div>
@@ -120,8 +146,10 @@
             .getElementById("enterRoomButton")
             .addEventListener("click", () => {
               const roomId = document.getElementById("roomIdInput").value;
+              const username = document.getElementById("username").value;
               if (roomId) {
                 window.location.search = `id=${roomId}`;
+                localStorage.setItem("username", username);
               }
             });
           return;
@@ -148,7 +176,7 @@
               messages.appendChild(item);
             });
           } catch (error) {
-            console.error("Errore nel recuperare i messaggi iniziali:", error);
+            console.error("Error retrieving initial messages:", error);
           }
 
           form.addEventListener("submit", function (e) {
@@ -156,7 +184,7 @@
             if (input.value) {
               const messageData = {
                 content: input.value,
-                username: "anonimo",
+                username: localStorage.getItem("username"),
                 idRoom,
               };
               socket.emit("message-sent", messageData);
